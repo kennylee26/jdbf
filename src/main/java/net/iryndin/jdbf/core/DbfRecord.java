@@ -50,6 +50,7 @@ public class DbfRecord {
      * Data records are preceded by one byte, that is, a space (0x20) if the record is not deleted, an asterisk (0x2A) if the record is deleted.
      * So, if record is preceded by 0x2A - it is considered to be deleted
      * All other cases: record is considered to be not deleted
+     *
      * @return
      */
     public boolean isDeleted() {
@@ -135,7 +136,7 @@ public class DbfRecord {
         }
         byte[] dbfFieldBytes = new byte[f.getLength()];
         System.arraycopy(bytes, f.getOffset(), dbfFieldBytes, 0, f.getLength());
-        int offsetInBlocks = BitUtils.makeInt(dbfFieldBytes[0],dbfFieldBytes[1],dbfFieldBytes[2],dbfFieldBytes[3]);
+        int offsetInBlocks = BitUtils.makeInt(dbfFieldBytes[0], dbfFieldBytes[1], dbfFieldBytes[2], dbfFieldBytes[3]);
         return memoReader.read(offsetInBlocks).getValue();
     }
 
@@ -146,7 +147,7 @@ public class DbfRecord {
         }
         byte[] dbfFieldBytes = new byte[f.getLength()];
         System.arraycopy(bytes, f.getOffset(), dbfFieldBytes, 0, f.getLength());
-        int offsetInBlocks = BitUtils.makeInt(dbfFieldBytes[0],dbfFieldBytes[1],dbfFieldBytes[2],dbfFieldBytes[3]);
+        int offsetInBlocks = BitUtils.makeInt(dbfFieldBytes[0], dbfFieldBytes[1], dbfFieldBytes[2], dbfFieldBytes[3]);
         return memoReader.read(offsetInBlocks).getValueAsString(charset);
     }
 
@@ -155,7 +156,10 @@ public class DbfRecord {
         if (charset == null) {
             charset = Charset.defaultCharset();
         }
-        return getMemoAsString(fieldName, charset);
+        String s = getMemoAsString(fieldName, charset);
+        //convert special line separator
+        s = s.replaceAll("[\\t\\n\\r]", System.getProperty("line.separator"));
+        return s;
     }
 
     public Date getDate(String fieldName) throws ParseException {
@@ -218,7 +222,7 @@ public class DbfRecord {
         System.arraycopy(fieldBytes, 0, bytes, f.getOffset(), f.getLength());
     }
 
-    private Integer getInteger(String fieldName) {
+    public Integer getInteger(String fieldName) {
         byte[] bytes = getBytes(fieldName);
 
         return BitUtils.makeInt(bytes[0], bytes[1], bytes[2], bytes[3]);

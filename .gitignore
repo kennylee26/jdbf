@@ -1,0 +1,50 @@
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# Logs and databases #
+######################
+*.log
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+*.jar
+*.iml
+*.ipr
+*.iws
+*.swp
+
+# Compiled source #
+###################
+.gradle/
+out/
+build
+*.class
+target
+bin/
+src/main/webapp/WEB-INF/classes/
+
+# eclipse file #
+################
+.classpath
+.settings/
+.project
+.mymetadata
+.checkstyle
+
+# idea files #
+################
+.idea/
+workspace.xml
+tasks.xml
+*.iml

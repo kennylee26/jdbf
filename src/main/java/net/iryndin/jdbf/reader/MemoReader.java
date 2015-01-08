@@ -3,25 +3,23 @@ package net.iryndin.jdbf.reader;
 import net.iryndin.jdbf.core.MemoFileHeader;
 import net.iryndin.jdbf.core.MemoRecord;
 import net.iryndin.jdbf.util.BitUtils;
-import net.iryndin.jdbf.util.IOUtils;
 import net.iryndin.jdbf.util.JdbfUtils;
 
 import java.io.*;
 
 /**
  * Reader of memo files (tested of *.FPT files - Visual FoxPro)
- * See links: 
- * 
+ * See links:
+ * <p/>
  * Visual FoxPro file formats:
  * http://msdn.microsoft.com/en-us/library/aa977077(v=vs.71).aspx
- * 
+ * <p/>
  * DBase file formats:
  * http://www.dbase.com/Knowledgebase/INT/db7_file_fmt.htm
- * 
  */
 public class MemoReader implements Closeable {
 
-    private static final int BUFFER_SIZE = 8192;
+    private static final int BUFFER_SIZE = 0x300000;//3mb buffer
     private InputStream memoInputStream;
     private MemoFileHeader memoHeader;
 
@@ -54,7 +52,7 @@ public class MemoReader implements Closeable {
 
     public MemoRecord read(int offsetInBlocks) throws IOException {
         memoInputStream.reset();
-        memoInputStream.skip(memoHeader.getBlockSize()*offsetInBlocks);
+        memoInputStream.skip(memoHeader.getBlockSize() * offsetInBlocks);
         byte[] recordHeader = new byte[8];
         memoInputStream.read(recordHeader);
         int memoRecordLength = BitUtils.makeInt(recordHeader[7], recordHeader[6], recordHeader[5], recordHeader[4]);
